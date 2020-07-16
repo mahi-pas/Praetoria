@@ -32,7 +32,7 @@ class Player:
     def getHealth(self):
         return self.health
     def getMaxHealth(self):
-        return self.getMaxHealth
+        return self.maxhealth
     def getLevel(self):
         return self.level
     def getWeapon(self):
@@ -160,6 +160,8 @@ class Weapon:
         self.durability += amt
         if self.durability > self.maxdur:
             self.durability = self.maxdur
+        if amt == -1:
+            self.durability == self.maxdur
 
 class Shield:
     def __init__(self,name,protection,durability):
@@ -177,6 +179,8 @@ class Shield:
         self.durability += amt
         if self.durability > self.maxdur:
             self.durability = self.maxdur
+        if amt == -1:
+            self.durability == self.maxdur
 
 class Potion:
     def __init__(self, name, effect, amt):
@@ -410,7 +414,21 @@ def atPotions():
         atPotions()
 
 def atRepair():
-    pass
+    ans = choose(["1. Weapons","2. Shields","3. Cancel"],"What would you like to repair?" )
+    if ans == 1:
+        resp = choose([list(character.getWeaponList()),str(len(character.getWeapons())+1)+". Leave"],"Choose which weapon to fix. Cost: 20. You have " + str(character.getMoney())+" krollers")
+        if resp == len(character.getWeapons())+1:
+            atInventory()
+        character.getAWeapon(resp-1).fix(-1)
+        atInventory()
+    elif ans == 2:
+        resp = choose([list(character.getShieldList()),str(len(character.getShields())+1)+". Leave"],"Choose which shield to fix. Cost: 20. You have " + str(character.getMoney())+" krollers")
+        if resp == len(character.getShields())+1:
+            atInventory()
+        character.getAShield(resp-1).fix(-1)
+        atInventory()
+    elif ans == 3:
+        atShop()
 #Farm def
 def atFarm():
     atLocation()
@@ -446,13 +464,17 @@ def atInventory():
         atInventory()
     if ans == 4: #Save
         atSave()
+        atInventory()
     if ans == 5: #Leave
         pass
 '''
-            Mahi, Level 1
-            Money: 0
-            Weapon: Nothing Damage: 0 Durability: 1
-            Shield: nothing Protection: 0 Durability: 1
+        m, Level 1, HP 20/20
+        Money: 99999949
+        Equipped Weapon: Nothing Damage: 0 Durability: 1
+        Equipped Shield: Nothing Protection: 0 Durability: 1
+        Weapons: 'Nothing'
+        Shields: 'Nothing'
+        Potions:'Repair Potion'
       '''  
 #potions
 def atDurPot(amt):
@@ -483,9 +505,9 @@ def atSave():
             exit()
         elif asc == 2:
             atSave()
-    elif resp == 3: 
+    elif resp == 3: #save and quit
         pass
-    elif resp == 4:
+    elif resp == 4: #back
         pass
             
                             
