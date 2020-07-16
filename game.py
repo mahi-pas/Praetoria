@@ -213,10 +213,10 @@ class Bank:
             
 
 class Engine:
-    def __init__():
+    def __init__(self):
         pass
     
-    def run():
+    def run(self):
         pass
 
 def clear():
